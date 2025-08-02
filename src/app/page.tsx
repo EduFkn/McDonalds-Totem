@@ -6,8 +6,8 @@ const Page = () => {
 
 
     <div>
-      <h2 className="">Koe</h2>
-      <Button>Fala dae pae</Button>
+      <h2 className="">Oi</h2>
+      <Button>Ola</Button>
       <Input placeholder="fala dae chefe" />
     </div>
   );
