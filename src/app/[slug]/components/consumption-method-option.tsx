@@ -29,7 +29,7 @@ export const ConsumptionMethodOption = ({ imageUrl, slug, option, imageAlt, butt
                     />
                 </div>
                 <Button className="rounded-full" variant="secondary" asChild>
-                    <Link prefetch href={`${slug}/menu?consumptionMethod=${option}`}>
+                    <Link prefetch={true} href={`${slug}/menu?consumptionMethod=${option}`}>
                         {buttonText}
                     </Link>
 
