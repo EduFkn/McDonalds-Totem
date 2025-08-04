@@ -4,7 +4,8 @@ import { createContext, ReactNode, useState } from "react";
 
 
 
-interface CartProduct extends Pick<Product, "id" | "name" | "price" | "imageUrl"> {
+export interface CartProduct
+    extends Pick<Product, "id" | "name" | "price" | "imageUrl"> {
     quantity: number;
 }
 
@@ -64,3 +65,4 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         </CartContext.Provider>
     )
 }
+
