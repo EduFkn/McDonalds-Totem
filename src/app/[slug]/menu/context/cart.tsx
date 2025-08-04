@@ -32,8 +32,27 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const addProduct = (product: CartProduct) => {
-        setProducts(prev => ([...prev, product]))
+
+
+        const productsIsAlreadyOnTheCart = products.some(prevProduct => prevProduct.id === product.id)
+        if (!productsIsAlreadyOnTheCart) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return setProducts((prev) => [...products, product]);
+        }
+        setProducts(prevProducts => {
+            return prevProducts.map(prevProduct => {
+                if (prevProduct.id === product.id) {
+                    return {
+                        ...prevProduct,
+                        quantity: prevProduct.quantity + product.quantity,
+                    }
+                }
+                return prevProduct
+            })
+        })
+
     }
+
     return (
         <CartContext.Provider value={{
             isOpen,
