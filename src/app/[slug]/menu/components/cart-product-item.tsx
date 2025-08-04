@@ -15,7 +15,8 @@ interface CartItemProps {
 
 
 const CartProductItem = ({ product }: CartItemProps) => {
-    const { decreaseProductQuantity } = useContext(CartContext)
+    const { decreaseProductQuantity, increaseProductQuantity } = useContext(CartContext)
+
     return (
 
 
@@ -33,7 +34,7 @@ const CartProductItem = ({ product }: CartItemProps) => {
                             <ChevronLeftIcon />
                         </Button>
                         <p className="text-xs w-7">{product.quantity}</p>
-                        <Button variant="destructive" className="w-7 h-7 rounded-lg">
+                        <Button onClick={() => increaseProductQuantity(product.id)} variant="destructive" className="w-7 h-7 rounded-lg">
                             <ChevronRightIcon />
                         </Button>
                     </div>
