@@ -1,10 +1,12 @@
+"use client"
 import { ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
+import { useContext } from "react";
 
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/helpers/format-currency";
 
-import { CartProduct } from "../context/cart";
+import { CartContext, CartProduct } from "../context/cart";
 
 interface CartItemProps {
     product: CartProduct
@@ -13,6 +15,7 @@ interface CartItemProps {
 
 
 const CartProductItem = ({ product }: CartItemProps) => {
+    const { decreaseProductQuantity } = useContext(CartContext)
     return (
 
 
@@ -26,7 +29,7 @@ const CartProductItem = ({ product }: CartItemProps) => {
                     <p className="text-xs max-w-[90%] truncate text-ellipsis">{product.name}</p>
                     <p className="text-sm font-semibold">{formatCurrency(product.price)}</p>
                     <div className="flex items-center gap-1 text-center">
-                        <Button variant="outline" className="w-7 h-7 rounded-lg">
+                        <Button onClick={() => decreaseProductQuantity(product.id)} variant="outline" className="w-7 h-7 rounded-lg">
                             <ChevronLeftIcon />
                         </Button>
                         <p className="text-xs w-7">{product.quantity}</p>
