@@ -1,6 +1,7 @@
 "use server"
 
 import { ConsumptionMethod } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 import { db } from "@/lib/prisma";
 
@@ -59,4 +60,5 @@ const productsWithPricesAndQuantities =  input.products.map(product =>({
       restaurantId: restaurant.id,
     },
   });
+  redirect(`/${input.slug}/orders?cpf=${input.customerCpf}`)
 };
