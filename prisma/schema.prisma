@@ -61,6 +61,8 @@ model Order {
   Restaurant        Restaurant        @relation(fields: [restaurantId], references: [id])
   restaurantId      String
   orderProducts     orderProduct[]
+  customerName      String
+  customerCpf       String
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 }
