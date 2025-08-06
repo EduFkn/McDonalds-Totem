@@ -26,20 +26,22 @@ const RestaurantMenuPage = async ({ params, searchParams }: RestaurantMenuPagePr
         return notFound()
     }
     const restaurant = await db.restaurant.findUnique({
-        where: { slug }, include: {
+        where: { slug }, 
+        include: {
             menuCategories: {
                 include: { products: true },
             },
         },
     });
 
+    if (!restaurant) {
+        return notFound();
+    }
+
     return (
-
-
         <div>
             <RestaurantHeader restaurant={restaurant} />
             <RestaurantCategories restaurant={restaurant} />
-
         </div>
     );
 }

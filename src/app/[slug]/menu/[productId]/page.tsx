@@ -23,13 +23,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     const product = await db.product.findUnique({
         where: { id: productId },
         include: {
-            restaurant: {
-                select: {
-                    name: true,
-                    avatarImageUrl: true,
-                    slug: true,
-                },
-            },
+            restaurant: true,
         },
     });
     if (!product) {
@@ -40,10 +34,10 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     }
     return (
 
-        <>
+        <div>
             <ProductHeader product={product} />
             <ProductDetails product={product} />
-        </>
+        </div>
     )
 }
 
