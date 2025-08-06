@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/helpers/format-currency";
 
 import { CartContext } from "../context/cart";
@@ -65,15 +65,20 @@ const RestaurantCategories = ({ restaurant }: RestaurantCategoriesProps) => {
             </div>
 
             <ScrollArea className="w-full">
-                <div className="flex w-max space-x-4 px-4 pt-0">
-                    {restaurant.menuCategories.map(category => (
-                        <Button onClick={() => handleCategoryClick(category)} key={category.id} variant={
-                            getCategoryButtonVariant(category)}
-                            size="sm" className="rounded-full">
+                <div className="flex  w-max space-x-4 p-4 pt-0">
+                    {restaurant.menuCategories.map((category) => (
+                        <Button
+                            onClick={() => handleCategoryClick(category)}
+                            key={category.id}
+                            variant={getCategoryButtonVariant(category)}
+                            size="sm"
+                            className="rounded-lg"
+                        >
                             {category.name}
                         </Button>
                     ))}
                 </div>
+                <ScrollBar orientation="horizontal" />
             </ScrollArea>
             <h3 className="px-5 pt-8 font-semibold">{selectedCategory.name}</h3>
             <Prodcuts products={selectedCategory.products} />
