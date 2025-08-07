@@ -1,12 +1,12 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ConsumptionMethod } from "@prisma/client";
+import { loadStripe } from "@stripe/stripe-js"
 import { Loader2Icon } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useContext, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format"
-import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { CreateOrder } from "../actions/create-order";
+import { createStripCheckout } from "../actions/create-stripe-checkout";
 import { CartContext } from "../context/cart";
 import { isValidCpf } from "../helpers/cpf";
 
@@ -49,7 +50,7 @@ const FinishOrderDialog = ({ open, onOpenChange }: FinishOrderDialogProps) => {
     const { slug } = useParams<{ slug: string }>()
     const { products } = useContext(CartContext)
     const searchParams = useSearchParams()
-    const [isPending, startTransition] = useTransition()
+    const [isPending] = useTransition()
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -63,17 +64,23 @@ const FinishOrderDialog = ({ open, onOpenChange }: FinishOrderDialogProps) => {
             const consumptionMethod = searchParams.get(
                 "consumptionMethod",
             ) as ConsumptionMethod;
-            startTransition(async () => {
-                await CreateOrder({
-                    consumptionMethod,
-                    customerCpf: data.cpf,
-                    customerName: data.name,
-                    products,
-                    slug,
-                });
-                onOpenChange(false)
-                toast.success("Pedido finalizado com sucesso !")
+
+            await CreateOrder({
+                consumptionMethod,
+                customerCpf: data.cpf,
+                customerName: data.name,
+                products,
+                slug,
+            });
+            const { sessionId } = await createStripCheckout({ products })
+            if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
+                return
+            }
+            const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+            stripe?.redirectToCheckout({
+                sessionId: sessionId
             })
+
 
 
         } catch (error) {
